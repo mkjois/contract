@@ -1,4 +1,5 @@
-var fs = require("fs");
+var fs = require("fs"),
+    fparse = require("./function_parser").parse;
 
 var outfile = "out.js";
 
@@ -15,8 +16,12 @@ if (args.length === 0) {
 
 fs.readFile(infile, {encoding: "utf-8"}, function(err, data) {
   if (err) { throw err; }
+  var ast = fparse(data);
+  console.log(JSON.stringify(ast, null, 2));
+  /*
   var lines = data.split("\n").slice(0, -1);
   for (var i in lines) {
     console.log(lines[i]);
   }
+  */
 });

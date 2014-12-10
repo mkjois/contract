@@ -1,9 +1,17 @@
-/*
-# Comment
-*/
-
-function f(x) {
-  return x < 2 ? 1 : x * f(x-1);
+function f(x, y, z) {
+  /**
+   * #contract: x is number
+   * #test: 4 ==> 24
+   */
+  if (x < 2) {
+    return 1;:q
+  }
+  return x * f(x-1);
 }
 
-console.log(f(4))
+function (a,b) {
+  // yolo
+  // swag
+  // money
+  return 5;
+}
