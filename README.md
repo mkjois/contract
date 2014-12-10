@@ -1,6 +1,8 @@
-contract.js
-===========
+# Contract
+A lightweight JavaScript contract and doctest utility.
 
-A lightweight JavaScript function contract, doctest, and code coverage framework.
+### By Manny Jois, Romil Singapuri, Khoa Tran
 
-By Manny Jois, Romil Singapuri, Khoa Tran
+* [Proposal](https://www.google.com/url?q=https://docs.google.com/a/berkeley.edu/document/d/1gkfXjkVFW5d0HlQBsnYlgo0GeRG0_fByIVRPQAJ36q4)
+* [PA6 Report](https://www.google.com/url?q=https://docs.google.com/a/berkeley.edu/document/d/1kD8CHTRA9Bjjmh1f5EW-6SySvNp6P-HBatGZFX2Cmcs)
+* Design Doc
