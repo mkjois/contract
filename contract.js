@@ -1,6 +1,6 @@
 var fs = require("fs"),
-    fparse = require("./function_parser"),
-    cparse = require("./contract_parser").parser;
+    fparse = require("./function_grammar"),
+    cparse = require("./contract_grammar").parser;
 
 var outfile = "out.js";
 
@@ -26,7 +26,15 @@ fs.readFile(infile, {encoding: "utf-8"}, function(err, data) {
       var indexOfHash = doc.text.indexOf("#");
       if (indexOfHash >= 0) {
         var directive = doc.text.slice(indexOfHash);
-        directive = cparse.parse(directive);
+        try {
+          directive = cparse.parse(directive);
+        } catch (e) {
+          if (e.message.slice(0, 11) == "Parse error") {
+            e.message = e.message.replace("1", doc.line);
+          }
+          console.error(e.message);
+          process.exit(1);
+        }
         doc.directive = directive;
         newDocs.push(doc);
       }

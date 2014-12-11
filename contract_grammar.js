@@ -72,12 +72,12 @@
   }
 */
 var parser = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,7],$V1=[1,8],$V2=[1,9],$V3=[1,12],$V4=[1,14],$V5=[7,10,11,12,19],$V6=[14,20],$V7=[1,28],$V8=[1,24],$V9=[1,23],$Va=[1,25],$Vb=[1,26],$Vc=[1,27],$Vd=[1,32],$Ve=[1,33],$Vf=[7,10,11,12,19,23,24];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,11],$V1=[1,12],$V2=[1,13],$V3=[1,16],$V4=[1,17],$V5=[1,21],$V6=[7,14,15,16,23],$V7=[18,24],$V8=[1,37],$V9=[1,33],$Va=[1,32],$Vb=[1,34],$Vc=[1,35],$Vd=[1,36],$Ve=[1,42],$Vf=[1,43],$Vg=[7,14,15,16,23,28,29];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"directives":3,"CONTRACT":4,":":5,"clause":6,"EOF":7,"ite":8,"IF":9,"THEN":10,"ELSE":11,";":12,"subjects":13,"VERB":14,"descriptor":15,"PASS":16,"FAIL":17,"(":18,")":19,",":20,"subject":21,"ID":22,"AND":23,"OR":24,"NOT":25,"INTEGER":26,"FLOAT":27,"STRING":28,"$accept":0,"$end":1},
-terminals_: {2:"error",4:"CONTRACT",5:":",7:"EOF",9:"IF",10:"THEN",11:"ELSE",12:";",14:"VERB",16:"PASS",17:"FAIL",18:"(",19:")",20:",",22:"ID",23:"AND",24:"OR",25:"NOT",26:"INTEGER",27:"FLOAT",28:"STRING"},
-productions_: [0,[3,4],[3,4],[8,6],[6,3],[6,3],[6,1],[6,1],[6,3],[13,3],[13,1],[21,2],[21,1],[15,3],[15,3],[15,2],[15,1],[15,1],[15,1],[15,1],[15,3]],
+symbols_: {"error":2,"directives":3,"CONTRACT":4,":":5,"clause":6,"EOF":7,"ite":8,"EXAMPLE":9,"JS":10,"ARROW":11,"SETUP":12,"IF":13,"THEN":14,"ELSE":15,";":16,"subjects":17,"VERB":18,"descriptor":19,"PASS":20,"FAIL":21,"(":22,")":23,",":24,"subject":25,"ID":26,"OUTPUT":27,"AND":28,"OR":29,"NOT":30,"INTEGER":31,"FLOAT":32,"STRING":33,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"CONTRACT",5:":",7:"EOF",9:"EXAMPLE",10:"JS",11:"ARROW",12:"SETUP",13:"IF",14:"THEN",15:"ELSE",16:";",18:"VERB",20:"PASS",21:"FAIL",22:"(",23:")",24:",",26:"ID",27:"OUTPUT",28:"AND",29:"OR",30:"NOT",31:"INTEGER",32:"FLOAT",33:"STRING"},
+productions_: [0,[3,4],[3,4],[3,5],[3,3],[8,6],[6,3],[6,3],[6,1],[6,1],[6,3],[17,3],[17,1],[25,2],[25,1],[25,2],[25,1],[19,3],[19,3],[19,2],[19,1],[19,1],[19,1],[19,1],[19,3]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -87,60 +87,72 @@ case 1: case 2:
 return {type: "contract", clause: $$[$0-1]};
 break;
 case 3:
-this.$ = {type: "ite", cond: $$[$0-4], true: $$[$0-2], false: $$[$0]};
+return {type: "example", input: $$[$0-2].trim(), output: $$[$0].trim()};
 break;
 case 4:
-this.$ = {type: "compound", operand1: $$[$0-2], operand2: $$[$0]};
+return {type: "setup", code: $$[$0].trim()};
 break;
 case 5:
-this.$ = {type: "clause", subjects: $$[$0-2], verb: $$[$0-1], descriptor: $$[$0]};
+this.$ = {type: "ite", cond: $$[$0-4], true: $$[$0-2], false: $$[$0]};
 break;
 case 6:
-this.$ = {type: "pass-lit"};
+this.$ = {type: "compound", operand1: $$[$0-2], operand2: $$[$0]};
 break;
 case 7:
-this.$ = {type: "fail-lit"};
+this.$ = {type: "clause", subjects: $$[$0-2], verb: $$[$0-1], descriptor: $$[$0]};
 break;
-case 8: case 20:
-this.$ = $$[$0-1];
+case 8:
+this.$ = {type: "pass-lit"};
 break;
 case 9:
-this.$ = $$[$0-2].concat([$$[$0]]);
+this.$ = {type: "fail-lit"};
 break;
-case 10:
-this.$ = [$$[$0]];
+case 10: case 24:
+this.$ = $$[$0-1];
 break;
 case 11:
-this.$ = {type: "subject", qualifier: $$[$0-1], name: $$[$0]};
+this.$ = $$[$0-2].concat([$$[$0]]);
 break;
 case 12:
-this.$ = {type: "subject", qualifier: null, name: $$[$0]};
+this.$ = [$$[$0]];
 break;
 case 13:
-this.$ = {type: "and", operand1: $$[$0-2], operand2: $$[$0]};
+this.$ = {type: "subject", qualifier: $$[$0-1], name: $$[$0]};
 break;
 case 14:
-this.$ = {type: "or", operand1: $$[$0-2], operand2: $$[$0]};
+this.$ = {type: "subject", qualifier: null, name: $$[$0]};
 break;
 case 15:
-this.$ = {type: "not", operand1: $$[$0]};
+this.$ = {type: "subject", qualifier: $$[$0-1], name: "@output"};
 break;
 case 16:
-this.$ = {type: "adjective", name: $$[$0]};
+this.$ = {type: "subject", qualifier: null, name: "@output"};
 break;
 case 17:
-this.$ = {type: "int-lit", value: parseInt($$[$0])};
+this.$ = {type: "and", operand1: $$[$0-2], operand2: $$[$0]};
 break;
 case 18:
-this.$ = {type: "float-lit", value: parseFloat($$[$0])};
+this.$ = {type: "or", operand1: $$[$0-2], operand2: $$[$0]};
 break;
 case 19:
+this.$ = {type: "not", operand1: $$[$0]};
+break;
+case 20:
+this.$ = {type: "adjective", name: $$[$0]};
+break;
+case 21:
+this.$ = {type: "int-lit", value: parseInt($$[$0])};
+break;
+case 22:
+this.$ = {type: "float-lit", value: parseFloat($$[$0])};
+break;
+case 23:
 this.$ = {type: "string-lit", value: $$[$0].slice(1,-1)};
 break;
 }
 },
-table: [{3:1,4:[1,2]},{1:[3]},{5:[1,3]},{6:4,8:5,9:[1,10],13:6,16:$V0,17:$V1,18:$V2,21:11,22:$V3},{7:[1,13],12:$V4},{7:[1,15]},{14:[1,16],20:[1,17]},o($V5,[2,6]),o($V5,[2,7]),{6:18,13:6,16:$V0,17:$V1,18:$V2,21:11,22:$V3},{6:19,13:6,16:$V0,17:$V1,18:$V2,21:11,22:$V3},o($V6,[2,10]),o($V6,[2,12],{22:[1,20]}),{1:[2,1]},{6:21,13:6,16:$V0,17:$V1,18:$V2,21:11,22:$V3},{1:[2,2]},{15:22,18:$V7,22:$V8,25:$V9,26:$Va,27:$Vb,28:$Vc},{21:29,22:$V3},{12:$V4,19:[1,30]},{10:[1,31],12:$V4},o($V6,[2,11]),o($V5,[2,4]),o($V5,[2,5],{23:$Vd,24:$Ve}),{15:34,18:$V7,22:$V8,25:$V9,26:$Va,27:$Vb,28:$Vc},o($Vf,[2,16]),o($Vf,[2,17]),o($Vf,[2,18]),o($Vf,[2,19]),{15:35,18:$V7,22:$V8,25:$V9,26:$Va,27:$Vb,28:$Vc},o($V6,[2,9]),o($V5,[2,8]),{6:36,13:6,16:$V0,17:$V1,18:$V2,21:11,22:$V3},{15:37,18:$V7,22:$V8,25:$V9,26:$Va,27:$Vb,28:$Vc},{15:38,18:$V7,22:$V8,25:$V9,26:$Va,27:$Vb,28:$Vc},o($Vf,[2,15]),{19:[1,39],23:$Vd,24:$Ve},{11:[1,40],12:$V4},o($Vf,[2,13]),o([7,10,11,12,19,24],[2,14],{23:$Vd}),o($Vf,[2,20]),{6:41,13:6,16:$V0,17:$V1,18:$V2,21:11,22:$V3},{7:[2,3],12:$V4}],
-defaultActions: {13:[2,1],15:[2,2]},
+table: [{3:1,4:[1,2],9:[1,3],12:[1,4]},{1:[3]},{5:[1,5]},{5:[1,6]},{5:[1,7]},{6:8,8:9,13:[1,14],17:10,20:$V0,21:$V1,22:$V2,25:15,26:$V3,27:$V4},{10:[1,18]},{10:[1,19]},{7:[1,20],16:$V5},{7:[1,22]},{18:[1,23],24:[1,24]},o($V6,[2,8]),o($V6,[2,9]),{6:25,17:10,20:$V0,21:$V1,22:$V2,25:15,26:$V3,27:$V4},{6:26,17:10,20:$V0,21:$V1,22:$V2,25:15,26:$V3,27:$V4},o($V7,[2,12]),o($V7,[2,14],{26:[1,27],27:[1,28]}),o($V7,[2,16]),{11:[1,29]},{1:[2,4]},{1:[2,1]},{6:30,17:10,20:$V0,21:$V1,22:$V2,25:15,26:$V3,27:$V4},{1:[2,2]},{19:31,22:$V8,26:$V9,30:$Va,31:$Vb,32:$Vc,33:$Vd},{25:38,26:$V3,27:$V4},{16:$V5,23:[1,39]},{14:[1,40],16:$V5},o($V7,[2,13]),o($V7,[2,15]),{10:[1,41]},o($V6,[2,6]),o($V6,[2,7],{28:$Ve,29:$Vf}),{19:44,22:$V8,26:$V9,30:$Va,31:$Vb,32:$Vc,33:$Vd},o($Vg,[2,20]),o($Vg,[2,21]),o($Vg,[2,22]),o($Vg,[2,23]),{19:45,22:$V8,26:$V9,30:$Va,31:$Vb,32:$Vc,33:$Vd},o($V7,[2,11]),o($V6,[2,10]),{6:46,17:10,20:$V0,21:$V1,22:$V2,25:15,26:$V3,27:$V4},{1:[2,3]},{19:47,22:$V8,26:$V9,30:$Va,31:$Vb,32:$Vc,33:$Vd},{19:48,22:$V8,26:$V9,30:$Va,31:$Vb,32:$Vc,33:$Vd},o($Vg,[2,19]),{23:[1,49],28:$Ve,29:$Vf},{15:[1,50],16:$V5},o($Vg,[2,17]),o([7,14,15,16,23,29],[2,18],{28:$Ve}),o($Vg,[2,24]),{6:51,17:10,20:$V0,21:$V1,22:$V2,25:15,26:$V3,27:$V4},{7:[2,5],16:$V5}],
+defaultActions: {19:[2,4],20:[2,1],22:[2,2],41:[2,3]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -619,62 +631,76 @@ case 1:/* do nothing */
 break;
 case 2:/* skip whitespace */
 break;
-case 3:this.begin('command'); return 4;
+case 3:/* skip whitespace */
 break;
-case 4:this.begin('command'); return 'EXAMPLE';
+case 4:/* skip whitespace */
 break;
-case 5:return 27
+case 5:this.begin('contract'); this.begin('colon'); return 4;
 break;
-case 6:return 27
+case 6:this.begin('example'); this.begin('colon'); return 9;
 break;
-case 7:return 26
+case 7:this.begin('setup'); this.begin('colon'); return 12;
 break;
-case 8:return 28
+case 8:return 32
 break;
-case 9:return 28
+case 9:return 32
 break;
-case 10:return 9
+case 10:return 31
 break;
-case 11:return 10
+case 11:return 33
 break;
-case 12:return 11
+case 12:return 33
 break;
-case 13:return 23
+case 13:return 13
 break;
-case 14:return 24
+case 14:return 14
 break;
-case 15:return 25
+case 15:return 15
 break;
-case 16:return 14
+case 16:return 28
 break;
-case 17:return 14
+case 17:return 29
 break;
-case 18:return 14
+case 18:return 30
 break;
-case 19:return 16
+case 19:return 18
 break;
-case 20:return 17
+case 20:return 18
 break;
-case 21:return 22
+case 21:return 18
 break;
-case 22:return ":"
+case 22:return 20
 break;
-case 23:return ","
+case 23:return 21
 break;
-case 24:return ";"
+case 24:return 27
 break;
-case 25:return 18
+case 25:return 26
 break;
-case 26:return 19
+case 26:return ","
 break;
-case 27:return 7
+case 27:return ";"
 break;
-case 28:return 'INVALID'
+case 28:return 22
+break;
+case 29:return 23
+break;
+case 30:return 7
+break;
+case 31:return 'INVALID'
+break;
+case 32:return 11
+break;
+case 33:return 10
+break;
+case 34:return 10
+break;
+case 35:this.popState(); return ":";
 break;
 }
 },
-rules: [/^(?:#)/,/^(?:.)/,/^(?:\s+)/,/^(?:contract\b)/,/^(?:example\b)/,/^(?:[\+\-]?[0-9]*(\.[0-9]+)(e[\+\-]?[0-9]+)?\b)/,/^(?:[\+\-]?[0-9]+(e[\+\-]?[0-9]+)\b)/,/^(?:[\+\-]?[0-9]+\b)/,/^(?:"((\\.)|[^"])*")/,/^(?:'((\\.)|[^'])*')/,/^(?:if\b)/,/^(?:then\b)/,/^(?:else\b)/,/^(?:and\b)/,/^(?:or\b)/,/^(?:not\b)/,/^(?:is\b)/,/^(?:are\b)/,/^(?:in\b)/,/^(?:pass\b)/,/^(?:fail\b)/,/^(?:[a-zA-Z_][a-zA-Z0-9_]*)/,/^(?::)/,/^(?:,)/,/^(?:;)/,/^(?:\()/,/^(?:\))/,/^(?:$)/,/^(?:.)/],
-conditions: {"command":{"rules":[2,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28],"inclusive":false},"directive":{"rules":[2,3,4],"inclusive":false},"INITIAL":{"rules":[0,1,2],"inclusive":true}}
+rules: [/^(?:#)/,/^(?:.)/,/^(?:\s+)/,/^(?:\s+)/,/^(?:\s+)/,/^(?:contract\b)/,/^(?:example\b)/,/^(?:setup\b)/,/^(?:[\+\-]?[0-9]*(\.[0-9]+)(e[\+\-]?[0-9]+)?\b)/,/^(?:[\+\-]?[0-9]+(e[\+\-]?[0-9]+)\b)/,/^(?:[\+\-]?[0-9]+\b)/,/^(?:"((\\.)|[^"])*")/,/^(?:'((\\.)|[^'])*')/,/^(?:if\b)/,/^(?:then\b)/,/^(?:else\b)/,/^(?:and\b)/,/^(?:or\b)/,/^(?:not\b)/,/^(?:is\b)/,/^(?:are\b)/,/^(?:in\b)/,/^(?:pass\b)/,/^(?:fail\b)/,/^(?:output\b)/,/^(?:[a-zA-Z_][a-zA-Z0-9_]*)/,/^(?:,)/,/^(?:;)/,/^(?:\()/,/^(?:\))/,/^(?:$)/,/^(?:.)/,/^(?:=>)/,/^(?:((?!=>).)+)/,/^(?:.+)/,/^(?::)/],
+conditions: {"colon":{"rules":[4,35],"inclusive":false},"setup":{"rules":[34],"inclusive":false},"example":{"rules":[32,33],"inclusive":false},"contract":{"rules":[3,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],"inclusive":false},"directive":{"rules":[2,5,6,7],"inclusive":false},"INITIAL":{"rules":[0,1],"inclusive":true}}
 });
 return lexer;
 })();

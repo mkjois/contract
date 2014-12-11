@@ -1356,17 +1356,10 @@ module.exports = (function() {
       var initialize = true;
       var newline = true;
       var global_line, global_col;
-      var brace_stack = [];
-      var end_of_return = false;
       var UUID = 0;
       var uniquename = function() {
         return "__" + line() + "__" + column() + "__";
       };
-      var setglobals = function() {
-        global_line = line();
-        global_col = column();
-        return true;
-      }
       var addtounit = function(id, properties) {
         if (!(id in functions)) {
           functions[id] = {}
