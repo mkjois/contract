@@ -1,7 +1,6 @@
 function f(x, y, z) {
   /**
    * #contract: x is number
-   * #test: 4 ==> 24
    */
   if (x < 2) {
     return 1;:q

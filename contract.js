@@ -1,5 +1,6 @@
 var fs = require("fs"),
-    fparse = require("./function_parser").parse;
+    fparse = require("./function_parser"),
+    cparse = require("./contract_parser").parser;
 
 var outfile = "out.js";
 
@@ -16,12 +17,21 @@ if (args.length === 0) {
 
 fs.readFile(infile, {encoding: "utf-8"}, function(err, data) {
   if (err) { throw err; }
-  var ast = fparse(data);
-  console.log(JSON.stringify(ast, null, 2));
-  /*
-  var lines = data.split("\n").slice(0, -1);
-  for (var i in lines) {
-    console.log(lines[i]);
+  var ast = fparse.parse(data);
+  for (var i in ast) {
+    var func = ast[i];
+    var newDocs = []
+    for (var j in func.docs) {
+      var doc = func.docs[j];
+      var indexOfHash = doc.text.indexOf("#");
+      if (indexOfHash >= 0) {
+        var directive = doc.text.slice(indexOfHash);
+        directive = cparse.parse(directive);
+        doc.directive = directive;
+        newDocs.push(doc);
+      }
+    }
+    func.docs = newDocs;
   }
-  */
+  console.log(JSON.stringify(ast, null, 4));
 });
