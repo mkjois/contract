@@ -101,7 +101,7 @@ funcbody
 
 paramlist
   = "(" spaces? v:varlist spaces? ")"
-    { return addmetadata("params", {vars: v}); }
+    { return v; }
 
 varlist
   = id:identifier spaces? "," spaces? v:varlist

@@ -1,6 +1,7 @@
 function f(x, y, z) {
   /**
-   * #contract: x is number
+   * #contract: all y, x are number; z is sorted and cool or not null
+   * #contract: y is 4 or "word" or -23.7e-2
    * #setup: my_z = ["a", {one: 1}]
    * #example: f(5, null, my_z) => 120
    */

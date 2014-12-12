@@ -1,6 +1,9 @@
-var fs = require("fs"),
-    fparse = require("./function_grammar"),
-    cparse = require("./contract_grammar").parser;
+if (typeof(module) !== 'undefined') {
+  var fs = require("fs"),
+      fparse = require("./function_grammar"),
+      cparse = require("./contract_grammar").parser,
+      bytecode = require("./bytecode");
+}
 
 var outfile = "out.js";
 
@@ -41,5 +44,7 @@ fs.readFile(infile, {encoding: "utf-8"}, function(err, data) {
     }
     func.docs = newDocs;
   }
-  console.log(JSON.stringify(ast, null, 4));
+  //console.log(JSON.stringify(ast, null, 4));
+  var btc = bytecode.compile(ast);
+  console.log(JSON.stringify(btc, null, 4));
 });

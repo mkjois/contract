@@ -39,6 +39,7 @@
 <contract>"pass"                 return 'PASS'
 <contract>"fail"                 return 'FAIL'
 <contract>"output"               return 'OUTPUT'
+<contract>"null"                 return 'NULL'
 <contract>[a-zA-Z_][a-zA-Z0-9_]* return 'ID'
 <contract>","                    return ","
 <contract>";"                    return ";"
@@ -86,7 +87,7 @@ clause
     : clause ";" clause
         {$$ = {type: "compound", operand1: $1, operand2: $3};}
     | subjects VERB descriptor
-        {$$ = {type: "clause", subjects: $1, verb: $2, descriptor: $3};}
+        {$$ = {type: "clause", subjects: $1, verb: {type: "verb", name: $2}, descriptor: $3};}
     | PASS
         {$$ = {type: "pass-lit"};}
     | FAIL
@@ -128,6 +129,8 @@ descriptor
         {$$ = {type: "float-lit", value: parseFloat($1)};}
     | STRING
         {$$ = {type: "string-lit", value: $1.slice(1,-1)};}
+    | NULL
+        {$$ = {type: "null", value: null};}
     | '(' descriptor ')'
         {$$ = $2;}
     ;
