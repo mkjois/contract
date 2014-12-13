@@ -123,6 +123,8 @@ descriptor
         {$$ = {type: "not", operand1: $2};}
     | ID
         {$$ = {type: "adjective", name: $1};}
+    | ID '(' args ')'
+        {$$ = {type: "adjective", name: $1 + $2 + $3 + $4};}
     | INTEGER
         {$$ = {type: "int-lit", value: parseInt($1)};}
     | FLOAT
@@ -133,4 +135,24 @@ descriptor
         {$$ = {type: "null", value: null};}
     | '(' descriptor ')'
         {$$ = $2;}
+    ;
+
+args
+    : args "," arg
+        {$$ = $1 + $2 + $3;}
+    | arg
+        {$$ = $1;}
+    ;
+
+arg
+    : ID
+        {$$ = $1;}
+    | INTEGER
+        {$$ = parseInt($1);}
+    | FLOAT
+        {$$ = parseFloat($1);}
+    | STRING
+        {$$ = $1;}
+    | NULL
+        {$$ = null;}
     ;
