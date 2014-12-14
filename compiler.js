@@ -1,3 +1,9 @@
+if (typeof(module) !== 'undefined') {
+  module.exports = {
+    'processBytecode': processBytecode
+  };
+}
+
 /**
  * The registers.
  */
@@ -41,7 +47,7 @@ function handleFunc(btc) {
         reg[node.target] = op.not(reg[node.operand1]);
         break;
       case 'null':
-        reg[node.target] = 'null';
+        reg[node.target] = '(_______arg === null)';
         break;
       case 'clause':
         var nouns = [];
@@ -105,5 +111,17 @@ function handleFunc(btc) {
   for (i = 0; i < postLines.length; i++) {
     outArray.push('  ' + postLines[i]);
   }
+  outArray.push('}');
   return outArray.join("\n");
+}
+
+function processBytecode(btc) {
+  var results = [];
+  var i;
+  for (i = 0; i < btc.length; i++) {
+    if (btc[i].type == 'function') {
+      results.push(handleFunc(btc[i]));
+    }
+  }
+  return results.join("\n");
 }

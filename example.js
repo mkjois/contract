@@ -17,3 +17,9 @@ function (a,b) {
   // money
   return 5;
 }
+
+function g(x, y) {
+  /**
+   * #contract: x is sorted and not null
+   */
+}
