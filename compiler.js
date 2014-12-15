@@ -65,12 +65,12 @@ function handleFunc(btc, lines) {
           if (nouns[j].name !== '@output') {
             subjectArray.push('if (!(_______contract.' + nouns[j].qualifier + '(' +
                               nouns[j].name +
-                              ').each(function(_______arg) {' +
-                              reg[node.descriptor] + '}))) { return false; }');
+                              ').each(function(_______arg) { return ' +
+                              reg[node.descriptor] + '; }))) { return false; }');
           } else {
             subjectArray.push('if (!(_______contract.' + nouns[j].qualifier +
-                              '(o).each(function(_______arg) {' +
-                              reg[node.descriptor] + '}))) { return false; }');
+                              '(o).each(function(_______arg) { return ' +
+                              reg[node.descriptor] + '; }))) { return false; }');
 
           }
         }
