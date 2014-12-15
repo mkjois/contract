@@ -63,14 +63,16 @@ function handleFunc(btc, lines) {
         var subjectArray = ['function() {'];
         for (j = 0; j < nouns.length; j++) {
           if (nouns[j].name !== '@output') {
-            subjectArray.push('if (!(_______contract.' + nouns[j].qualifier + '(' +
-                              nouns[j].name +
+            subjectArray.push('if (!(_______contract.' + nouns[j].qualifier +
+                              '(' + nouns[j].name +
                               ').each(function(_______arg) { return ' +
-                              reg[node.descriptor] + '; }))) { return false; }');
+                              reg[node.descriptor] +
+                              '; }))) { return false; }');
           } else {
             subjectArray.push('if (!(_______contract.' + nouns[j].qualifier +
                               '(o).each(function(_______arg) { return ' +
-                              reg[node.descriptor] + '; }))) { return false; }');
+                              reg[node.descriptor] +
+                              '; }))) { return false; }');
 
           }
         }
@@ -81,7 +83,8 @@ function handleFunc(btc, lines) {
         if (reg[node.directive] !== undefined &&
             reg[node.directive].type == 'contract') {
           var msg = 'Violation in function ' + btc.name + ' for ' +
-                    lines[node.line-1].replace(new RegExp(' *\\* *#', 'g'), '#');
+                    lines[node.line-1].replace(new RegExp(' *\\* *#', 'g'),
+                                               '#');
           msg = '"' + msg.replace(new RegExp('\\"', 'g'), '\\"') + '"';
           postLines.push('_______enforce(' + reg[node.directive].clause +
                          ', ' + msg + ');');
@@ -171,19 +174,23 @@ function processBytecode(btc, text) {
           'names': names};
 }
 
-function processFile(btc, text) {
+function processFile(btc, text, depth) {
   var outJS = processBytecode(btc, text);
-  var outString = "var _______contract = require('js-contract');\n" +
+  var outString = "var _______contract = require('" +
+                  new Array(depth + 1).join('../') +
+                  ".contract.js');\n" +
                   "var _______enforce = _______contract.enforce;\n\n";
   var cleanedText = text;
   var i;
   var declarations = [];
   for (i = 0; i < outJS.names.length; i++) {
-    cleanedText = cleanedText.replace(new RegExp('function ' + outJS.names[i] + ' *\\('),
+    cleanedText = cleanedText.replace(new RegExp('function ' +
+                                      outJS.names[i] + ' *\\('),
                                       'function _______' + outJS.names[i] +
                                       '(', 'g');
     declarations.push('var _______first_' + outJS.names[i] + ' = true;');
   }
-  outString += declarations.join("\n") + "\n\n" + cleanedText + "\n\n" + outJS.result;
+  outString += declarations.join("\n") + "\n\n" + cleanedText +
+               "\n\n" + outJS.result;
   return outString;
 }
