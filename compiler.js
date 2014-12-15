@@ -81,8 +81,8 @@ function handleFunc(btc, lines) {
         if (reg[node.directive] !== undefined &&
             reg[node.directive].type == 'contract') {
           var msg = 'Violation in function ' + btc.name + ' for ' +
-                    lines[node.line-1].replace(new RegExp(' *\\* *#'), '#');
-          msg = '"' + msg.replace('"', '\\"') + '"';
+                    lines[node.line-1].replace(new RegExp(' *\\* *#', 'g'), '#');
+          msg = '"' + msg.replace(new RegExp('\\"', 'g'), '\\"') + '"';
           postLines.push('_______enforce(' + reg[node.directive].clause +
                          ', ' + msg + ');');
         }
@@ -120,13 +120,13 @@ function handleFunc(btc, lines) {
       case 'example':
         var msg = 'Failure in function ' + btc.name + ' for input ' +
                   node.input + ' and output ' + node.output;
-        msg = '"' + msg.replace('"', '\\"') + '"';
+        msg = '"' + msg.replace(new RegExp('\\"', 'g'), '\\"') + '"';
         var newInput = node.input.replace(
-                         new RegExp(' *' + btc.name + ' *\\('),
+                         new RegExp(' *' + btc.name + ' *\\(', 'g'),
                          ' _______' + btc.name + '(');
         var newOutput = node.output.replace(
                          new RegExp(' *' + btc.name + ' *\\('),
-                         ' _______' + btc.name + '(');
+                         ' _______' + btc.name + '(', 'g');
         preLines.push('if (_______first_' + btc.name + ') { ' +
                       '_______example(' + newInput + ' === ' +
                       newOutput + ', ' + msg + '); }');
@@ -181,7 +181,7 @@ function processFile(btc, text) {
   for (i = 0; i < outJS.names.length; i++) {
     cleanedText = cleanedText.replace(new RegExp('function ' + outJS.names[i] + ' *\\('),
                                       'function _______' + outJS.names[i] +
-                                      '(');
+                                      '(', 'g');
     declarations.push('var _______first_' + outJS.names[i] + ' = true;');
   }
   outString += declarations.join("\n") + "\n\n" + cleanedText + "\n\n" + outJS.result;
