@@ -127,9 +127,9 @@ function handleFunc(btc, lines) {
         var newOutput = node.output.replace(
                          new RegExp(' *' + btc.name + ' *\\('),
                          ' _______' + btc.name + '(');
-        preLines.push('if (_______first_' + btc.name + ') { ')
-        preLines.push('    _______example(' + newInput + ' === ' +
-                      newOutput + ', ' + msg + ');');
+        preLines.push('if (_______first_' + btc.name + ') { ' +
+                      '_______example(' + newInput + ' === ' +
+                      newOutput + ', ' + msg + '); }');
         break;
       case 'contract':
         reg[node.target] = {'type': 'contract', 'clause': reg[node.clause]};
