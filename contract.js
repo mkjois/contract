@@ -6,6 +6,25 @@ if (typeof(module) !== 'undefined') {
       compiler = require("./compiler");
 }
 
+function fileTree(start) {
+  if (fs.lstatSync(start).isDirectory()) {
+    var rv = {'path': start, 'files': [], 'dirs': []};
+    var contents = fs.readdirSync(start);
+    var i;
+    for (i = 0; i < contents.length; i++) {
+      var info = fileTree(start + '/' + contents[i]);
+      if (typeof(info) === 'string') {
+        rv.files.push(info);
+      } else {
+        rv.dirs.push(info);
+      }
+    }
+    return rv;
+  } else {
+    return start;
+  }
+}
+
 var outfile = "out.js";
 
 var args = process.argv.slice(2).filter(function(arg) {
