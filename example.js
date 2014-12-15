@@ -18,8 +18,9 @@ function (a,b) {
   return 5;
 }
 
-function g(x, y) {
+function g  (x, y) {
   /**
    * #contract: x is sorted and not null
+   * #contract: if x is sorted then y is sorted else x is not sorted
    */
 }

@@ -56,6 +56,6 @@ fs.readFile(infile, {encoding: "utf-8"}, function(err, data) {
   //console.log(JSON.stringify(ast, null, 4));
   var btc = bytecode.compile(newAst);
   console.log(JSON.stringify(btc, null, 4));
-  var jscode = compiler.processBytecode(btc);
-  console.log(jscode)
+  var jscode = compiler.processFile(btc, data);
+  console.log(jscode);
 });

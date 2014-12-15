@@ -1,6 +1,7 @@
 if (typeof(module) !== 'undefined') {
   module.exports = {
-    'processBytecode': processBytecode
+    'processBytecode': processBytecode,
+    'processFile': processFile
   };
 }
 
@@ -62,12 +63,12 @@ function handleFunc(btc) {
         var subjectArray = ['function() {'];
         for (j = 0; j < nouns.length; j++) {
           if (nouns[j].name !== '@output') {
-            subjectArray.push('if (!(' + nouns[j].qualifier + '(' +
+            subjectArray.push('if (!(_______contract.' + nouns[j].qualifier + '(' +
                               nouns[j].name +
                               ').each(function(_______arg) {' +
                               reg[node.descriptor] + '}))) { return false; }');
           } else {
-            subjectArray.push('if (!(' + nouns[j].qualifier +
+            subjectArray.push('if (!(_______contract.' + nouns[j].qualifier +
                               '(o).each(function(_______arg) {' +
                               reg[node.descriptor] + '}))) { return false; }');
 
@@ -87,6 +88,11 @@ function handleFunc(btc) {
       case 'string-lit':
         reg[node.target] = '(_______arg === "' +
                            node.value.replace('"', '\\"') + '")';
+        break;
+      case 'ite':
+        reg[node.target] = 'function() { if (' + reg[node.cond] + '()) { ' +
+                           'return ' + reg[node.true] + '(); } else { ' +
+                           'return ' + reg[node.false] + '(); } }'
         break;
       case 'compound':
         reg[node.target] = 'function() { if (!(' + reg[node.operand1] +
@@ -117,11 +123,29 @@ function handleFunc(btc) {
 
 function processBytecode(btc) {
   var results = [];
+  var names = []
   var i;
   for (i = 0; i < btc.length; i++) {
     if (btc[i].type == 'function') {
       results.push(handleFunc(btc[i]));
+      names.push(btc[i].name);
     }
   }
-  return results.join("\n");
+  return {'result': results.join("\n"),
+          'names': names};
+}
+
+function processFile(btc, text) {
+  var outJS = processBytecode(btc);
+  var outString = "var _______contract = require('js-contract');\n" +
+                  "var _______enforce = _______contract.enforce;\n\n";
+  var cleanedText = text;
+  var i;
+  for (i = 0; i < outJS.names.length; i++) {
+    cleanedText = cleanedText.replace(new RegExp('function ' + outJS.names[i] + ' *\\('),
+                                      'function _______' + outJS.names[i] +
+                                      '(');
+  }
+  outString += cleanedText + "\n\n" + outJS.result;
+  return outString;
 }
