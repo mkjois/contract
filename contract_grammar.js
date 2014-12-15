@@ -688,42 +688,40 @@ case 19:return 18
 break;
 case 20:return 18
 break;
-case 21:return 18
+case 21:return 20
 break;
-case 22:return 20
+case 22:return 21
 break;
-case 23:return 21
+case 23:return 27
 break;
-case 24:return 27
+case 24:return 35
 break;
-case 25:return 35
+case 25:return 26
 break;
-case 26:return 26
+case 26:return ","
 break;
-case 27:return ","
+case 27:return ";"
 break;
-case 28:return ";"
+case 28:return 22
 break;
-case 29:return 22
+case 29:return 23
 break;
-case 30:return 23
+case 30:return 7
 break;
-case 31:return 7
+case 31:return 'INVALID'
 break;
-case 32:return 'INVALID'
+case 32:return 11
 break;
-case 33:return 11
+case 33:return 10
 break;
 case 34:return 10
 break;
-case 35:return 10
-break;
-case 36:this.popState(); return ":";
+case 35:this.popState(); return ":";
 break;
 }
 },
-rules: [/^(?:#)/,/^(?:.)/,/^(?:\s+)/,/^(?:\s+)/,/^(?:\s+)/,/^(?:contract\b)/,/^(?:example\b)/,/^(?:setup\b)/,/^(?:[\+\-]?[0-9]*(\.[0-9]+)(e[\+\-]?[0-9]+)?\b)/,/^(?:[\+\-]?[0-9]+(e[\+\-]?[0-9]+)\b)/,/^(?:[\+\-]?[0-9]+\b)/,/^(?:"((\\.)|[^"])*")/,/^(?:'((\\.)|[^'])*')/,/^(?:if\b)/,/^(?:then\b)/,/^(?:else\b)/,/^(?:and\b)/,/^(?:or\b)/,/^(?:not\b)/,/^(?:is\b)/,/^(?:are\b)/,/^(?:in\b)/,/^(?:pass\b)/,/^(?:fail\b)/,/^(?:output\b)/,/^(?:null\b)/,/^(?:[a-zA-Z_][a-zA-Z0-9_]*)/,/^(?:,)/,/^(?:;)/,/^(?:\()/,/^(?:\))/,/^(?:$)/,/^(?:.)/,/^(?:=>)/,/^(?:((?!=>).)+)/,/^(?:.+)/,/^(?::)/],
-conditions: {"colon":{"rules":[4,36],"inclusive":false},"setup":{"rules":[35],"inclusive":false},"example":{"rules":[33,34],"inclusive":false},"contract":{"rules":[3,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32],"inclusive":false},"directive":{"rules":[2,5,6,7],"inclusive":false},"INITIAL":{"rules":[0,1],"inclusive":true}}
+rules: [/^(?:#)/,/^(?:.)/,/^(?:\s+)/,/^(?:\s+)/,/^(?:\s+)/,/^(?:contract\b)/,/^(?:example\b)/,/^(?:setup\b)/,/^(?:[\+\-]?[0-9]*(\.[0-9]+)(e[\+\-]?[0-9]+)?\b)/,/^(?:[\+\-]?[0-9]+(e[\+\-]?[0-9]+)\b)/,/^(?:[\+\-]?[0-9]+\b)/,/^(?:"((\\.)|[^"])*")/,/^(?:'((\\.)|[^'])*')/,/^(?:if\b)/,/^(?:then\b)/,/^(?:else\b)/,/^(?:and\b)/,/^(?:or\b)/,/^(?:not\b)/,/^(?:is\b)/,/^(?:are\b)/,/^(?:@pass\b)/,/^(?:@fail\b)/,/^(?:@output\b)/,/^(?:null\b)/,/^(?:[a-zA-Z_][a-zA-Z0-9_]*)/,/^(?:,)/,/^(?:;)/,/^(?:\()/,/^(?:\))/,/^(?:$)/,/^(?:.)/,/^(?:=>)/,/^(?:((?!=>).)+)/,/^(?:.+)/,/^(?::)/],
+conditions: {"colon":{"rules":[4,35],"inclusive":false},"setup":{"rules":[34],"inclusive":false},"example":{"rules":[32,33],"inclusive":false},"contract":{"rules":[3,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],"inclusive":false},"directive":{"rules":[2,5,6,7],"inclusive":false},"INITIAL":{"rules":[0,1],"inclusive":true}}
 });
 return lexer;
 })();

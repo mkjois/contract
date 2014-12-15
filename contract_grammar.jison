@@ -35,10 +35,9 @@
 <contract>"not"                  return 'NOT'
 <contract>"is"                   return 'VERB'
 <contract>"are"                  return 'VERB'
-<contract>"in"                   return 'VERB'
-<contract>"pass"                 return 'PASS'
-<contract>"fail"                 return 'FAIL'
-<contract>"output"               return 'OUTPUT'
+<contract>"@pass"                 return 'PASS'
+<contract>"@fail"                 return 'FAIL'
+<contract>"@output"               return 'OUTPUT'
 <contract>"null"                 return 'NULL'
 <contract>[a-zA-Z_][a-zA-Z0-9_]* return 'ID'
 <contract>","                    return ","
