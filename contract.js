@@ -67,14 +67,14 @@ fs.readFile(infile, {encoding: "utf-8"}, function(err, data) {
       func.docs = newDocs;
       newAst.push(func);
     } else {
-      console.log("Warning: function at line " + func.line +
+      console.error("Warning: function at line " + func.line +
                   ", column " + func.column +
                   " has no name and will not be tested");
     }
   }
   //console.log(JSON.stringify(ast, null, 4));
   var btc = bytecode.compile(newAst);
-  console.log(JSON.stringify(btc, null, 4));
+  //console.log(JSON.stringify(btc, null, 4));
   var jscode = compiler.processFile(btc, data);
   console.log(jscode);
 });

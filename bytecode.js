@@ -50,9 +50,9 @@ function btcnode(node, target, btc) {
       instruction.docs = docsBtc;
       break;
     case "doc":
-      console.log('---------------------');
-      console.log(JSON.stringify(node, null, 2));
-      console.log('---------------------');
+      //console.log('---------------------');
+      //console.log(JSON.stringify(node, null, 2));
+      //console.log('---------------------');
       var regDirective = uniquegen();
       btcnode(node.directive, regDirective, btc);
       instruction.directive = regDirective;
