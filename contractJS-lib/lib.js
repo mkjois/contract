@@ -14,7 +14,7 @@ module.exports = {
         return true;
       }
       return false;
-    } catch {e} {
+    } catch (e) {
       return false;
     }
   },
@@ -40,6 +40,7 @@ module.exports = {
     return function(y) { 
       try {
         return y < x; 
+      }
       catch (e) {
         return false;
       }
@@ -54,6 +55,7 @@ module.exports = {
     return function(y) { 
       try {
         return y > x; 
+      }
       catch (e) {
         return false;
       }
@@ -79,8 +81,11 @@ module.exports = {
    */
   'sorted': function(arr) {
     try {
+      if (arr.length == 1 || (arr.length == 2 && arr[0] < arr[1])) {
+        return true;
+      }
       var i = 0;
-      for (i = 0; i < arr.length-1; i++) {
+      for (i = 0; i < arr.length - 1; i++) {
         if (arr[i] > arr[i+1]) {
           return false;
         }

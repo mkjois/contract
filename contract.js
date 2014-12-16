@@ -1,9 +1,9 @@
 if (typeof(module) !== 'undefined') {
   var fs = require("fs"),
-      fparse = require("./js-contract-lib/function_grammar"),
-      cparse = require("./js-contract-lib/contract_grammar").parser,
-      bytecode = require("./js-contract-lib/bytecode");
-      compiler = require("./js-contract-lib/compiler");
+      fparse = require("./contractJS-lib/function_grammar"),
+      cparse = require("./contractJS-lib/contract_grammar").parser,
+      bytecode = require("./contractJS-lib/bytecode");
+      compiler = require("./contractJS-lib/compiler");
 }
 
 /**
@@ -178,4 +178,4 @@ if (fs.existsSync(outdir)) {
 
 makeAdaptedVersion(indir, outdir);
 fs.writeFileSync(outdir + '/.contract.js',
-                 fs.readFileSync('./js-contract-lib/lib.js'));
+                 fs.readFileSync('./contractJS-lib/lib.js'));
