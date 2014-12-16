@@ -1,3 +1,5 @@
+var assert = require('assert');
+
 module.exports = {
   'enforce': function(f, msg) {
     if (!f()) {
