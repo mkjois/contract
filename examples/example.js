@@ -1,5 +1,6 @@
 function f(x, y, z) {
   /**
+   * #contract: x is number; y is float; z is object
    * #contract: all y, @output are number; z is below(4, "abc", null, +7.3e-1)
    * #contract: x is 4 or "word" and not -23.7e-2
    * #contract: if z is sorted then @pass else x is odd
