@@ -5,6 +5,9 @@ module.exports = {
     }
   },
 
+  /**
+   *  Checks if a number is odd
+   */
   'odd': function(x) {
     try {
       if ((x % 2) == 1) {
@@ -16,6 +19,9 @@ module.exports = {
     }
   },
 
+  /**
+   *  Returns a function f which returns f(x)
+   */
   'single': function(x) {
     return {'each': function(f) { 
       try {
@@ -26,6 +32,10 @@ module.exports = {
     }};
   },
 
+  /**
+   *  Returns a function that takes a parameter y and
+   *  checks if y is less than x
+   */
   'below': function(x) {
     return function(y) { 
       try {
@@ -36,6 +46,10 @@ module.exports = {
     };
   },
 
+  /**
+   *  Returns a function that takes a parameter y and
+   *  checks if y is more than x
+   */
   'above': function(x) {
     return function(y) { 
       try {
@@ -46,6 +60,10 @@ module.exports = {
     };
   },
 
+  /**
+   *  Returns a function that takes a parameter y and
+   *  checks if y is equal to x
+   */
   'equal': function(x) {
     return function(y) { 
       try {
@@ -56,7 +74,9 @@ module.exports = {
     };
   },
 
-  // Check if an array is sorted in ascending order
+  /**
+   *  Checks if an array is sorted in ascending order
+   */
   'sorted': function(arr) {
     try {
       var i = 0;
@@ -69,6 +89,9 @@ module.exports = {
     } catch (e) { return false; }
   },
 
+  /**
+   *  Returns true if every element in the array satisfies a predicate f
+   */
   'all': function(arr) {
     return {'each': function(f) {
       try {
@@ -79,6 +102,9 @@ module.exports = {
     }};
   },
 
+  /**
+   *  Returns true if the parameter x is a number
+   */
   'number': function(x) {
     try {
   	  return typeof x === 'number';
@@ -87,6 +113,9 @@ module.exports = {
     }
   },
 
+  /**
+   *  Returns true if the parameter x is a string
+   */
   'string': function(x) {
     try {
   	  return typeof x === 'string';
@@ -95,6 +124,9 @@ module.exports = {
     }
   },
 
+  /**
+   *  Returns true if the parameter x is an array
+   */
   'array': function(x) {
     try {
   	  return x.constructor === Array;
@@ -103,6 +135,9 @@ module.exports = {
     }
   },
 
+  /**
+   *  Returns true if the parameter x is an object
+   */
   'object': function(x) {
     try {
   	  return typeof x === 'object';
@@ -111,6 +146,9 @@ module.exports = {
     }
   },
 
+  /**
+   *  Returns true if the parameter x is a function
+   */
   'function': function(x) {
     try {
   	  return typeof x === 'function';
@@ -119,6 +157,10 @@ module.exports = {
     }
   },
 
+  /**
+   *  Takes an array or object arr and returns a function that takes a single argument,
+   *  which returns true if that argument is in arr, or if it's a property of an object arr
+   */
   'in': function(arr) {
     return function(x) {
       try {
