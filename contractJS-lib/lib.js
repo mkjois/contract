@@ -178,5 +178,14 @@ module.exports = {
         return false;
       }
     };
+  },
+
+  'equality': function(a, b) {
+    try {
+      assert.deepEqual(a, b);
+      return true;
+    } catch(e) {
+      return false;
+    }
   }
 }
