@@ -29,20 +29,22 @@ module.exports = {
   },
 
   // Check if an array is sorted in ascending order
-  'sorted': function(x) {
-  	var i = 0;
-    for (i = 0; i < arr.length-1; i++) {
-      if (arr[i] > arr[i+1]) {
-        return false;
+  'sorted': function(arr) {
+    try {
+      var i = 0;
+      for (i = 0; i < arr.length-1; i++) {
+        if (arr[i] > arr[i+1]) {
+          return false;
+        }
       }
-    }
-    return true;
+      return true;
+    } catch (e) { return false; }
   },
 
   'all': function(arr) {
-    return function(f) { 
+    return {'each': function(f) { 
     	return arr.every(f);
-    };
+    }};
   },
 
   'number': function(x) {
