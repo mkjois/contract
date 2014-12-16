@@ -6,26 +6,54 @@ module.exports = {
   },
 
   'odd': function(x) {
-    if ((x % 2) == 1) {
-      return true;
+    try {
+      if ((x % 2) == 1) {
+        return true;
+      }
+      return false;
+    } catch {e} {
+      return false;
     }
-    return false;
   },
 
   'single': function(x) {
-    return {'each': function(f) { return f(x); }};
+    return {'each': function(f) { 
+      try {
+        return f(x); 
+      } catch(e) {
+        return false;
+      }
+    }};
   },
 
   'below': function(x) {
-    return function(y) { return y < x; };
+    return function(y) { 
+      try {
+        return y < x; 
+      catch (e) {
+        return false;
+      }
+    };
   },
 
   'above': function(x) {
-    return function(y) { return y > x; };
+    return function(y) { 
+      try {
+        return y > x; 
+      catch (e) {
+        return false;
+      }
+    };
   },
 
   'equal': function(x) {
-    return function(y) { return y === x; };
+    return function(y) { 
+      try {
+        return y === x; 
+      } catch (e) {
+        return false;
+      }
+    };
   },
 
   // Check if an array is sorted in ascending order
@@ -42,34 +70,66 @@ module.exports = {
   },
 
   'all': function(arr) {
-    return {'each': function(f) { 
-    	return arr.every(f);
+    return {'each': function(f) {
+      try {
+    	 return arr.every(f);
+      } catch (e) {
+        return false;
+      }
     }};
   },
 
   'number': function(x) {
-  	return typeof x === 'number';
+    try {
+  	  return typeof x === 'number';
+    } catch (e) {
+      return false;
+    }
   },
 
   'string': function(x) {
-  	return typeof x === 'string';
+    try {
+  	  return typeof x === 'string';
+    } catch (e) {
+      return false;
+    }
   },
 
   'array': function(x) {
-  	return x.constructor === Array;
+    try {
+  	  return x.constructor === Array;
+    } catch (e) {
+      return false;
+    }
   },
 
   'object': function(x) {
-  	return typeof x === 'object';
+    try {
+  	  return typeof x === 'object';
+    } catch (e) {
+      return false;
+    }
   },
 
   'function': function(x) {
-  	return typeof(x) === 'function';
+    try {
+  	  return typeof x === 'function';
+    } catch (e) {
+      return false;
+    }
   },
 
   'in': function(arr) {
-    return function(x) { 
-    	return arr.indexOf(x) !== -1;
+    return function(x) {
+      try {
+        if (arr.constructor === Array) {
+    	    return arr.indexOf(x) !== -1;
+        } else if (typeof arr === 'object') {
+          return arr.hasOwnProperty(x);
+        }
+      } catch (e) {
+        return false;
+      }
     };
   }
 }
