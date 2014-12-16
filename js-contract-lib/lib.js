@@ -28,17 +28,15 @@ module.exports = {
     return function(y) { return y === x; };
   },
 
+  // Check if an array is sorted in ascending order
   'sorted': function(x) {
-  	return (function(direction) {
-	    return this.reduce(function(prev, next, i, arr) {
-	      if (direction === undefined)
-	        return (direction = prev <= next ? 1 : -1) || true;
-	      else
-	        return (direction + 1 ?
-	          (arr[i-1] <= next) : 
-	          (arr[i-1] >  next));
-	    }) ? Number(direction) : false;
-	  }).call(this);
+  	var i = 0;
+    for (i = 0; i < arr.length-1; i++) {
+      if (arr[i] > arr[i+1]) {
+        return false;
+      }
+    }
+    return true;
   },
 
   'all': function(arr) {
