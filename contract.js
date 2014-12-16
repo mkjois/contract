@@ -84,7 +84,11 @@ function copyDirStructure(source, dest) {
 
 function handleFile(source, dest, depth) {
   var data = fs.readFileSync(source, {'encoding': 'utf8'});
-  var output = buildFile(data, depth, source);
+  if (source.substring(source.length - 3, source.length) === '.js') {
+    var output = buildFile(data, depth, source);
+  } else {
+    var output = data;
+  }
   fs.writeFileSync(dest, output);
 }
 
