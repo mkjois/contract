@@ -133,7 +133,7 @@ function handleFunc(btc, lines) {
         break;
       case 'compound':
         var after = false;
-        if (reg[node.operand1].after || reg[node.operand1].after) {
+        if (reg[node.operand1].after || reg[node.operand2].after) {
           after = true;
         }
         reg[node.target] = {after: after,
@@ -199,6 +199,7 @@ function handleFunc(btc, lines) {
   for (i = 0; i < postLines.length; i++) {
     outArray.push('  ' + postLines[i]);
   }
+  outArray.push('  return _______out;');
   outArray.push('}');
   if (outArray.length > 0) {
     outArray.push('');
@@ -224,7 +225,7 @@ function processFile(btc, text, depth) {
   var outJS = processBytecode(btc, text);
   var outString = "var _______contract = require('" +
                   new Array(depth + 1).join('../') +
-                  ".contract.js');\n" +
+                  "./.contract.js');\n" +
                   "var _______enforce = _______contract.enforce;\n\n";
   var cleanedText = text;
   var i;
