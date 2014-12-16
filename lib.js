@@ -41,9 +41,35 @@ module.exports = {
 	  }).call(this);
   },
 
-  'all': function(x) {
-    return {'each': function(f) { 
-    	return x.every(f);
-    }};
+  'all': function(arr) {
+    return function(f) { 
+    	return arr.every(f);
+    };
   },
+
+  'number': function(x) {
+  	return typeof x === 'number';
+  },
+
+  'string': function(x) {
+  	return typeof x === 'string';
+  },
+
+  'array': function(x) {
+  	return x.constructor === Array;
+  },
+
+  'object': function(x) {
+  	return typeof x === 'object';
+  },
+
+  'function': function(x) {
+  	return typeof(x) === 'function';
+  },
+
+  'in': function(arr) {
+    return function(x) { 
+    	return arr.indexOf(x) !== -1;
+    };
+  }
 }
