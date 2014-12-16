@@ -26,4 +26,3 @@ function foo(input) {
 
 foo(8); // fail 1
 foo(7);
-foo(7);
