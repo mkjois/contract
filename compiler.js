@@ -30,9 +30,13 @@ var op = {
 
 function makeExample(input, output) {
   if (output === "Error") {
-    return "function() {\n  var verdict = false;\n  try{\n    " + input + ";\n  } catch (e) {\n    verdict = true;\n  }\n" + "  return verdict;\n}"
+    return "function() {\n      var verdict = false;\n      try{\n        " +
+      input + ";\n      } catch (e) {\n        verdict = true;\n      }\n" +
+      "      return verdict;\n    }";
   } else {
-    return "function() {\n  var verdict = " + input + " === " + output + ";\n  return verdict;\n}"
+    return "function() {\n      var verdict = " +
+      input + " === " + output +
+      ";\n      return verdict;\n    }";
   }
 }
 
@@ -71,23 +75,24 @@ function handleFunc(btc, lines) {
         var subjectArray = ['function() {'];
         for (j = 0; j < nouns.length; j++) {
           if (nouns[j].name !== '@output') {
-            subjectArray.push('if (!(_______contract.' + nouns[j].qualifier +
+            subjectArray.push('    if (!(_______contract.' + nouns[j].qualifier +
                               '(' + nouns[j].name +
                               ').each(function(_______arg) {');
-            subjectArray.push('  return ' + reg[node.descriptor] + ';');
-            subjectArray.push('}))) {');
-            subjectArray.push('  return false;');
-            subjectArray.push('}');
+            subjectArray.push('      return ' + reg[node.descriptor] + ';');
+            subjectArray.push('    }))) {');
+            subjectArray.push('      return false;');
+            subjectArray.push('    }');
           } else {
-            subjectArray.push('if (!(_______contract.' + nouns[j].qualifier +
+            subjectArray.push('    if (!(_______contract.' + nouns[j].qualifier +
                               '(_______out).each(function(_______arg) {');
-            subjectArray.push('  return ' + reg[node.descriptor] + ';');
-            subjectArray.push('}))) {');
-            subjectArray.push('  return false;');
-            subjectArray.push('}');
+            subjectArray.push('      return ' + reg[node.descriptor] + ';');
+            subjectArray.push('    }))) {');
+            subjectArray.push('      return false;');
+            subjectArray.push('    }');
           }
         }
-        subjectArray.push('return true; }');
+        subjectArray.push('    return true;');
+        subjectArray.push('  }');
         reg[node.target] = subjectArray.join("\n");
         break;
       case 'doc':
@@ -128,8 +133,8 @@ function handleFunc(btc, lines) {
                            reg[node.operand2] + '()\n  }\n}';
         break;
       case 'setup':
-        preLines.push('if (_______first_' + btc.name + ') {\n  ' + node.code +
-                      '\n}');
+        preLines.push('if (_______first_' + btc.name + ') {\n    ' + node.code +
+                      '\n  }');
         break;
       case 'example':
         var msg = 'Failure in function ' + btc.name + ' for input ' +
@@ -142,8 +147,8 @@ function handleFunc(btc, lines) {
                          new RegExp(' *' + btc.name + ' *\\('),
                          ' _______' + btc.name + '(', 'g');
         preLines.push('if (_______first_' + btc.name + ') {\n' +
-                      '  _______example(' + makeExample(newInput, newOutput) +
-                      ', ' + msg + ');\n}');
+                      '    _______enforce(' + makeExample(newInput, newOutput) +
+                      ', ' + msg + ');\n  }');
         break;
       case 'contract':
         reg[node.target] = {'type': 'contract', 'clause': reg[node.clause]};
@@ -190,8 +195,7 @@ function processFile(btc, text, depth) {
   var outString = "var _______contract = require('" +
                   new Array(depth + 1).join('../') +
                   ".contract.js');\n" +
-                  "var _______enforce = _______contract.enforce;\n" +
-                  "var _______example = _______contract.example;\n\n";
+                  "var _______enforce = _______contract.enforce;\n\n";
   var cleanedText = text;
   var i;
   var declarations = [];
