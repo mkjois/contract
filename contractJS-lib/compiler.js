@@ -41,8 +41,8 @@ function makeExample(input, output) {
       "      return verdict;\n    }";
   } else {
     return "function() {\n      var verdict = " +
-      input + " === " + output +
-      ";\n      return verdict;\n    }";
+      "_______contract.equality(" + input + ", " + output + ");\n" +
+      "      return verdict;\n    }";
   }
 }
 
