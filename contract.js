@@ -6,6 +6,14 @@ if (typeof(module) !== 'undefined') {
       compiler = require("./js-contract-lib/compiler");
 }
 
+/**
+ * Builds the file with tests from the previous file which included
+ * the tests as documentation.
+ * @param data is the text of the file.
+ * @param depth is the depth of the file in the directory structure.
+ * @param name is the name of the target file.
+ * @return string of the generated file. This is not saved to the filesystem.
+ */
 function buildFile(data, depth, name) {
   var ast = fparse.parse(data);
   var newAst = [];
@@ -44,11 +52,27 @@ function buildFile(data, depth, name) {
   return jscode;
 }
 
+/**
+ * Simple function to swap a prefix of a string with another prefix. Behavior
+ * if the prefix param is not actually a prefix of s is undefined.
+ * @param s is the original string.
+ * @param prefix is the prefex to replace.
+ * @param replacement is the new prefix.
+ * @return string with replaced prefix.
+ */
 function swapPrefix(s, prefix, replacement) {
   var chopped = s.substring(prefix.length, s.length);
   return replacement + chopped;
 }
 
+/**
+ * Build a tree-like map of a directory listing files and subdirectories
+ * recursively.
+ * @param start is the starting directory.
+ * @return object containing the directory structure. Has fields files
+ * containing a list of files, path containing the path name, and dirs
+ * containing recursively found subdirectories.
+ */
 function fileTree(start) {
   if (fs.lstatSync(start).isDirectory()) {
     var rv = {'path': start, 'files': [], 'dirs': []};
@@ -68,6 +92,12 @@ function fileTree(start) {
   }
 }
 
+/**
+ * Copes the structure of the source directory to the destination
+ * location recursively. Ignores files.
+ * @param source is the source directory.
+ * @param dest is the destination location.
+ */
 function copyDirStructure(source, dest) {
   var tree = fileTree(source);
   function helper(branch) {
@@ -82,6 +112,13 @@ function copyDirStructure(source, dest) {
   return tree;
 }
 
+/**
+ * Decides whether to process a file and in either case writes the
+ * relevant data to where the new file should be.
+ * @param source is the file path.
+ * @param dest is the location to write the result to.
+ * @param depth is the depth of the file in the directory structure.
+ */
 function handleFile(source, dest, depth) {
   var data = fs.readFileSync(source, {'encoding': 'utf8'});
   if (source.substring(source.length - 3, source.length) === '.js') {
@@ -91,6 +128,12 @@ function handleFile(source, dest, depth) {
   fs.writeFileSync(dest, output);
 }
 
+/**
+ * Copies the directory structure and then the files (modified or otherwise)
+ * from the source directory to the destination, which must not exist.
+ * @param source is the source directory.
+ * @param dest is the destination directory.
+ */
 function makeAdaptedVersion(source, dest) {
   var tree = copyDirStructure(source, dest);
   function helper(branch, depth) {
@@ -105,6 +148,8 @@ function makeAdaptedVersion(source, dest) {
   }
   helper(tree, 0);
 }
+
+// THE FOLLOWING CODE IS FOR COMMAND LINE INTERACTION
 
 var args = process.argv.slice(2).filter(function(arg) {
   return arg.charAt(0) !== "-";

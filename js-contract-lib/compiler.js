@@ -5,12 +5,6 @@ if (typeof(module) !== 'undefined') {
   };
 }
 
-// This helper function generates a unique register name
-function uniquegen() {
-  return '_______flag' + uniquegen.counter++;
-}
-uniquegen.counter = 1;
-
 /**
  * The registers.
  */
@@ -34,6 +28,12 @@ var op = {
     }
 };
 
+/**
+ * Builds the function for an example.
+ * @param input is the input JavaScript.
+ * @param output is the output JavaScript.
+ * @return string representation of the function testing the example.
+ */
 function makeExample(input, output) {
   if (output === "Error") {
     return "function() {\n      var verdict = false;\n      try{\n        " +
@@ -46,6 +46,11 @@ function makeExample(input, output) {
   }
 }
 
+/**
+ * Handles the bytecode for a function.
+ * @param btc is the bytecode.
+ * @param lines is an array of lines of the original file.
+ */
 function handleFunc(btc, lines) {
   var preLines = [],
       postLines = [],
@@ -207,6 +212,12 @@ function handleFunc(btc, lines) {
   return outArray.join("\n");
 }
 
+/**
+ * Processes bytecode in full.
+ * @param btc is the bytecode.
+ * @param text is the original file text.
+ * @return object containing the result and a list of function names.
+ */
 function processBytecode(btc, text) {
   var results = [];
   var names = [];
@@ -221,6 +232,13 @@ function processBytecode(btc, text) {
           'names': names};
 }
 
+/**
+ * Processes a file in full.
+ * @param btc is the bytecode for the file.
+ * @param text is the text of the file.
+ * @param depth is the depth of the file in the directory structure.
+ * @return string of the result file.
+ */
 function processFile(btc, text, depth) {
   var outJS = processBytecode(btc, text);
   var outString = "var _______contract = require('" +
