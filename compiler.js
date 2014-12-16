@@ -14,7 +14,7 @@ var reg = {};
  * Define operators.
  */
 var op = {
-  'or': 
+  'or':
     function(o1, o2) {
       return '(' + o1.toString() + ' || ' + o2.toString() + ')';
     },
@@ -97,7 +97,7 @@ function handleFunc(btc, lines) {
                     lines[node.line-1].replace(new RegExp(' *\\* *#', 'g'),
                                                '#');
           msg = '"' + msg.replace(new RegExp('\\"', 'g'), '\\"') + '"';
-          postLines.push('_______enforce(' + reg[node.directive].clause +
+          postLines.push('_______contract.enforce(' + reg[node.directive].clause +
                          ', ' + msg + ');');
         }
         break;
@@ -142,7 +142,7 @@ function handleFunc(btc, lines) {
                          new RegExp(' *' + btc.name + ' *\\('),
                          ' _______' + btc.name + '(', 'g');
         preLines.push('if (_______first_' + btc.name + ') {\n' +
-                      '  _______example(' + makeExample(newInput, newOutput) +
+                      '  _______contract.enforce(' + makeExample(newInput, newOutput) +
                       ', ' + msg + ');\n}');
         break;
       case 'contract':
