@@ -6,40 +6,7 @@ if (typeof(module) !== 'undefined') {
       compiler = require("./compiler");
 }
 
-function fileTree(start) {
-  if (fs.lstatSync(start).isDirectory()) {
-    var rv = {'path': start, 'files': [], 'dirs': []};
-    var contents = fs.readdirSync(start);
-    var i;
-    for (i = 0; i < contents.length; i++) {
-      var info = fileTree(start + '/' + contents[i]);
-      if (typeof(info) === 'string') {
-        rv.files.push(info);
-      } else {
-        rv.dirs.push(info);
-      }
-    }
-    return rv;
-  } else {
-    return start;
-  }
-}
-
-var outfile = "out.js";
-
-var args = process.argv.slice(2).filter(function(arg) {
-  return arg.charAt(0) !== "-";
-});
-
-if (args.length === 0) {
-  console.error("No input file specified.");
-  process.exit(1);
-} else {
-  infile = args[0];
-}
-
-fs.readFile(infile, {encoding: "utf-8"}, function(err, data) {
-  if (err) { throw err; }
+function buildFile(data, depth, name) {
   var ast = fparse.parse(data);
   var newAst = [];
   for (var i in ast) {
@@ -72,9 +39,93 @@ fs.readFile(infile, {encoding: "utf-8"}, function(err, data) {
                   " has no name and will not be tested");
     }
   }
-  //console.log(JSON.stringify(ast, null, 4));
   var btc = bytecode.compile(newAst);
-  //console.log(JSON.stringify(btc, null, 4));
-  var jscode = compiler.processFile(btc, data);
-  console.log(jscode);
+  var jscode = compiler.processFile(btc, data, depth);
+  return jscode;
+}
+
+function swapPrefix(s, prefix, replacement) {
+  var chopped = s.substring(prefix.length, s.length);
+  return replacement + chopped;
+}
+
+function fileTree(start) {
+  if (fs.lstatSync(start).isDirectory()) {
+    var rv = {'path': start, 'files': [], 'dirs': []};
+    var contents = fs.readdirSync(start);
+    var i;
+    for (i = 0; i < contents.length; i++) {
+      var info = fileTree(start + '/' + contents[i]);
+      if (typeof(info) === 'string') {
+        rv.files.push(info);
+      } else {
+        rv.dirs.push(info);
+      }
+    }
+    return rv;
+  } else {
+    return start;
+  }
+}
+
+function copyDirStructure(source, dest) {
+  var tree = fileTree(source);
+  function helper(branch) {
+    var name = swapPrefix(branch.path, source, dest);
+    fs.mkdirSync(name);
+    var i;
+    for (i = 0; i < branch.dirs.length; i++) {
+      helper(branch.dirs[i]);
+    }
+  }
+  helper(tree);
+  return tree;
+}
+
+function handleFile(source, dest, depth) {
+  var data = fs.readFileSync(source, {'encoding': 'utf8'});
+  var output = buildFile(data, depth, source);
+  fs.writeFileSync(dest, output);
+}
+
+function makeAdaptedVersion(source, dest) {
+  var tree = copyDirStructure(source, dest);
+  function helper(branch, depth) {
+    var i;
+    for (i = 0; i < branch.files.length; i++) {
+      var name = swapPrefix(branch.files[i], source, dest);
+      handleFile(branch.files[i], name, depth);
+    }
+    for (i = 0; i < branch.dirs.length; i++) {
+      helper(branch.dirs[i], depth + 1);
+    }
+  }
+  helper(tree, 0);
+}
+
+var args = process.argv.slice(2).filter(function(arg) {
+  return arg.charAt(0) !== "-";
 });
+
+if (args.length !== 2) {
+  console.error("Usage: node contract.js [input dir] [output dir]");
+  process.exit(1);
+} else {
+  var indir = args[0];
+  var outdir = args[1];
+}
+
+if (!fs.existsSync(indir)) {
+  console.error('Error: ' + indir + ' does not exist.');
+  process.exit(1);
+}
+if (!fs.lstatSync(indir).isDirectory()) {
+  console.error('Error: ' + indir + ' is not a directory.');
+  process.exit(1);
+}
+if (fs.existsSync(outdir)) {
+  console.error('Error: ' + outdir + ' already exists.');
+  process.exit(1);
+}
+
+makeAdaptedVersion(indir, outdir);
