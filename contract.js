@@ -1,9 +1,9 @@
 if (typeof(module) !== 'undefined') {
   var fs = require("fs"),
-      fparse = require("./function_grammar"),
-      cparse = require("./contract_grammar").parser,
-      bytecode = require("./bytecode");
-      compiler = require("./compiler");
+      fparse = require("./js-contract-lib/function_grammar"),
+      cparse = require("./js-contract-lib/contract_grammar").parser,
+      bytecode = require("./js-contract-lib/bytecode");
+      compiler = require("./js-contract-lib/compiler");
 }
 
 function buildFile(data, depth, name) {
@@ -87,7 +87,6 @@ function handleFile(source, dest, depth) {
   if (source.substring(source.length - 3, source.length) === '.js') {
     var output = buildFile(data, depth, source);
   } else {
-    var output = data;
   }
   fs.writeFileSync(dest, output);
 }
