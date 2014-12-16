@@ -199,6 +199,7 @@ function handleFunc(btc, lines) {
   for (i = 0; i < postLines.length; i++) {
     outArray.push('  ' + postLines[i]);
   }
+  outArray.push('  return _______out;');
   outArray.push('}');
   if (outArray.length > 0) {
     outArray.push('');
