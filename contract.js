@@ -132,3 +132,5 @@ if (fs.existsSync(outdir)) {
 }
 
 makeAdaptedVersion(indir, outdir);
+fs.writeFileSync(outdir + '/.contract.js',
+                 fs.readFileSync('./js-contract-lib/lib.js'));
