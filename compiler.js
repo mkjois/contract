@@ -28,6 +28,14 @@ var op = {
     }
 };
 
+function makeExample(input, output) {
+  if (output === "Error") {
+    return "function() {\n  var verdict = false;\n  try{\n    " + input + ";\n  } catch (e) {\n    verdict = true;\n  }\n" + "  return verdict;\n}"
+  } else {
+    return "function() {\n  var verdict = " + input + " === " + output + ";\n  return verdict;\n}"
+  }
+}
+
 function handleFunc(btc, lines) {
   var preLines = [],
       postLines = [];
@@ -65,15 +73,18 @@ function handleFunc(btc, lines) {
           if (nouns[j].name !== '@output') {
             subjectArray.push('if (!(_______contract.' + nouns[j].qualifier +
                               '(' + nouns[j].name +
-                              ').each(function(_______arg) { return ' +
-                              reg[node.descriptor] +
-                              '; }))) { return false; }');
+                              ').each(function(_______arg) {');
+            subjectArray.push('  return ' + reg[node.descriptor] + ';');
+            subjectArray.push('}))) {');
+            subjectArray.push('  return false;');
+            subjectArray.push('}');
           } else {
             subjectArray.push('if (!(_______contract.' + nouns[j].qualifier +
-                              '(o).each(function(_______arg) { return ' +
-                              reg[node.descriptor] +
-                              '; }))) { return false; }');
-
+                              '(_______out).each(function(_______arg) {');
+            subjectArray.push('  return ' + reg[node.descriptor] + ';');
+            subjectArray.push('}))) {');
+            subjectArray.push('  return false;');
+            subjectArray.push('}');
           }
         }
         subjectArray.push('return true; }');
@@ -107,18 +118,18 @@ function handleFunc(btc, lines) {
         reg[node.target] = 'function() { return false; }';
         break;
       case 'ite':
-        reg[node.target] = 'function() { if (' + reg[node.cond] + '()) { ' +
-                           'return ' + reg[node.true] + '(); } else { ' +
-                           'return ' + reg[node.false] + '(); } }'
+        reg[node.target] = 'function() {\n  if (' + reg[node.cond] + '()) {\n' +
+                           '    return ' + reg[node.true] + '();\n  } else {\n' +
+                           '    return ' + reg[node.false] + '();\n  }\n}'
         break;
       case 'compound':
-        reg[node.target] = 'function() { if (!(' + reg[node.operand1] +
-                           '())) { return false; } else { return ' +
-                           reg[node.operand2] + '() }}';
+        reg[node.target] = 'function() {\n  if (!(' + reg[node.operand1] +
+                           '())) {\n    return false;\n  } else {\n    return ' +
+                           reg[node.operand2] + '()\n  }\n}';
         break;
       case 'setup':
-        preLines.push('if (_______first_' + btc.name + ') { ' + node.code +
-                      ' }');
+        preLines.push('if (_______first_' + btc.name + ') {\n  ' + node.code +
+                      '\n}');
         break;
       case 'example':
         var msg = 'Failure in function ' + btc.name + ' for input ' +
@@ -130,9 +141,9 @@ function handleFunc(btc, lines) {
         var newOutput = node.output.replace(
                          new RegExp(' *' + btc.name + ' *\\('),
                          ' _______' + btc.name + '(', 'g');
-        preLines.push('if (_______first_' + btc.name + ') { ' +
-                      '_______example(' + newInput + ' === ' +
-                      newOutput + ', ' + msg + '); }');
+        preLines.push('if (_______first_' + btc.name + ') {\n' +
+                      '  _______example(' + makeExample(newInput, newOutput) +
+                      ', ' + msg + ');\n}');
         break;
       case 'contract':
         reg[node.target] = {'type': 'contract', 'clause': reg[node.clause]};
@@ -149,7 +160,7 @@ function handleFunc(btc, lines) {
     outArray.push('  ' + preLines[i]);
   }
   outArray.push('  _______first_' + btc.name + ' = false;')
-  outArray.push('  var o = _______' + btc.name + '(' + paramString + ');')
+  outArray.push('  var _______out = _______' + btc.name + '(' + paramString + ');')
   for (i = 0; i < postLines.length; i++) {
     outArray.push('  ' + postLines[i]);
   }
@@ -179,7 +190,8 @@ function processFile(btc, text, depth) {
   var outString = "var _______contract = require('" +
                   new Array(depth + 1).join('../') +
                   ".contract.js');\n" +
-                  "var _______enforce = _______contract.enforce;\n\n";
+                  "var _______enforce = _______contract.enforce;\n" +
+                  "var _______example = _______contract.example;\n\n";
   var cleanedText = text;
   var i;
   var declarations = [];

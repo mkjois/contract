@@ -24,5 +24,6 @@ function g  (x, y) {
   /**
    * #contract: x is sorted and not null
    * #contract: if x is sorted then y is sorted else x is not sorted
+   * #example: g(12, [null]) => Error
    */
 }
